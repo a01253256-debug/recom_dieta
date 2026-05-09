@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'theme/app_theme.dart';
 import 'screens/onboarding_screen.dart';
+import 'models/user_profile.dart';
+import 'screens/meal_plan_screen.dart'; 
  
 void main() {
   runApp(const NutriApp());
@@ -17,7 +19,6 @@ class NutriApp extends StatelessWidget {
       title: 'Nutrí',
       debugShowCheckedModeBanner: false, 
  
-      // Tema global de la app
       theme: ThemeData(
         scaffoldBackgroundColor: AppColors.background,
         colorScheme: const ColorScheme.dark(
@@ -33,28 +34,36 @@ class NutriApp extends StatelessWidget {
   }
 }
  
-// AppNavigator maneja en qué pantalla estamos.
 class AppNavigator extends StatefulWidget {
   const AppNavigator({super.key});
  
   @override
   State<AppNavigator> createState() => _AppNavigatorState();
 }
- 
+
 class _AppNavigatorState extends State<AppNavigator> {
   String _currentScreen = 'login';
- 
- //Funciones a llamar:
+  UserProfile? _userProfile;
+
+  // ── Métodos ──
   void _handleLogin(String email, String password) {
     debugPrint('Login: $email');
-    setState(() => _currentScreen = 'onboarding'); 
-}
- 
+    setState(() => _currentScreen = 'onboarding');
+  }
+
   void _handleRegister() {
     setState(() => _currentScreen = 'register');
     debugPrint('Navegar a registro');
   }
- 
+
+  void _handleOnboarding(UserProfile profile) {
+    setState(() {
+      _userProfile = profile;
+      _currentScreen = 'mealPlan';
+    });
+  }
+
+  // ── UI ──
   @override
   Widget build(BuildContext context) {
     switch (_currentScreen) {
@@ -63,10 +72,14 @@ class _AppNavigatorState extends State<AppNavigator> {
           onLogin: _handleLogin,
           onRegister: _handleRegister,
         );
-
-        case 'onboarding':
-        return const OnboardingScreen();
-
+      case 'onboarding':
+        return OnboardingScreen(
+          onContinue: _handleOnboarding,
+        );
+      case 'mealPlan':
+        return MealPlanScreen(
+          profile: _userProfile!,
+        );
       default:
         return LoginScreen(
           onLogin: _handleLogin,

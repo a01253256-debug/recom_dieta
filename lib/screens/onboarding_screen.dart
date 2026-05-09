@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../models/user_profile.dart';
+import '../services/nutrition_calculator.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  final Function(UserProfile) onContinue; // recibe el perfil completo
+
+  const OnboardingScreen({
+    super.key,
+    required this.onContinue,
+  });
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -60,6 +67,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {'id': 'gain',    'label': 'Subir de peso',       'icon': Icons.trending_up},
     {'id': 'maintain','label': 'Mantener mi peso',    'icon': Icons.monitor_heart_outlined},
   ];
+
+  void _handleContinue() {
+  // Validamos que el usuario haya llenado todo
+  if (_selectedGoal == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Por favor selecciona un objetivo.')),
+    );
+    return;
+  }
+
+  final current = double.tryParse(_currentWeightController.text);
+  final target  = double.tryParse(_targetWeightController.text);
+
+  if (current == null || target == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Por favor ingresa pesos válidos.')),
+    );
+    return;
+  }
+
+  // Todo bien — creamos el perfil y lo pasamos hacia arriba
+  final profile = UserProfile(
+    email: '',
+    goal: _selectedGoal!,
+    currentWeight: current,
+    targetWeight: target,
+  );
+
+  widget.onContinue(profile);
+}
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +189,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => debugPrint('Continuar'),
+                    onPressed: _handleContinue, 
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       padding: const EdgeInsets.symmetric(vertical: 14),
