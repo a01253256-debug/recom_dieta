@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'theme/app_theme.dart';
+import 'screens/onboarding_screen.dart';
  
 void main() {
   runApp(const NutriApp());
@@ -13,7 +14,6 @@ class NutriApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // MaterialApp: configura la app entera (tema, rutas, título, etc.)
       title: 'Nutrí',
       debugShowCheckedModeBanner: false, 
  
@@ -24,7 +24,7 @@ class NutriApp extends StatelessWidget {
           primary: AppColors.primary,
           surface: AppColors.surface,
         ),
-        fontFamily: 'DMSans', // fuente por defecto para toda la app
+        fontFamily: 'DMSans',
       ),
  
       // widget que se muestra al abrir la app
@@ -34,7 +34,6 @@ class NutriApp extends StatelessWidget {
 }
  
 // AppNavigator maneja en qué pantalla estamos.
-// Usamos StatefulWidget porque la pantalla activa puede cambiar.
 class AppNavigator extends StatefulWidget {
   const AppNavigator({super.key});
  
@@ -48,7 +47,8 @@ class _AppNavigatorState extends State<AppNavigator> {
  //Funciones a llamar:
   void _handleLogin(String email, String password) {
     debugPrint('Login: $email');
-  }
+    setState(() => _currentScreen = 'onboarding'); 
+}
  
   void _handleRegister() {
     setState(() => _currentScreen = 'register');
@@ -63,6 +63,9 @@ class _AppNavigatorState extends State<AppNavigator> {
           onLogin: _handleLogin,
           onRegister: _handleRegister,
         );
+
+        case 'onboarding':
+        return const OnboardingScreen();
 
       default:
         return LoginScreen(
