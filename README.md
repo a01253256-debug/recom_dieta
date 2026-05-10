@@ -1,17 +1,8 @@
-# recom_dieta
+# Nutrí
+Esta app calcula el requerimiento calórico de los usuarios según su peso actual y su meta. En función del cálculo se emiten un plan alimenticio personalizado con recomendaciones de desayuno, comida y cena. 
 
-A new Flutter project.
+Todo esto manteniendo un proceso saludable, sencillo y con una experiencia de usuario clara desde el primer uso.
 
-## Getting Started
+# Video demo
+https://drive.google.com/file/d/1K19o81F7yEcYoTRhrQMLQn6rQsz7KXVr/view?usp=sharing
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
